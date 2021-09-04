@@ -3,8 +3,10 @@ const StateMachine = require('.')
 const O = {}
 const S = new StateMachine(O)
 
+S.verbose = true
+
 S
-.add('one', {
+.addState('one', {
   name: 'one',
   onEnter: ()=>{
     console.log('enter state 1')
@@ -16,7 +18,7 @@ S
     console.log('update state 1')
   },
 })
-.add('two', {
+.addState('two', {
   name: 'two',
   onEnter: ()=>{
     console.log('enter state 2')
@@ -28,7 +30,7 @@ S
     console.log('update state 2')
   },
 })
-.add('three', {
+.addState('three', {
   name: 'three',
   onEnter: ()=>{
     console.log('enter state 3')
@@ -40,8 +42,78 @@ S
     console.log('update state 3')
   },
 })
-.set('one')
-.set('two')
-.set('three')
+.addState('four', {
+  name: 'four',
+  onEnter: ()=>{
+    console.log('enter state 4')
+  },
+  onExit: ()=>{
+    console.log('exit state 4')
+  },
+  onUpdate: ()=>{
+    console.log('update state 4')
+  },
+})
+.addState('five', {
+  name: 'five',
+  onEnter: ()=>{
+    console.log('enter state 5')
+  },
+  onExit: ()=>{
+    console.log('exit state 5')
+  },
+  onUpdate: ()=>{
+    console.log('update state 5')
+  },
+})
+.addState('six', {
+  name: 'six',
+  onEnter: ()=>{
+    console.log('enter state 6')
+  },
+  onExit: ()=>{
+    console.log('exit state 6')
+  },
+  onUpdate: ()=>{
+    console.log('update state 6')
+  },
+})
+.addState('seven', {
+  name: 'seven',
+  onEnter: ()=>{
+    console.log('enter state 7')
+  },
+  onExit: ()=>{
+    console.log('exit state 7')
+  },
+  onUpdate: ()=>{
+    console.log('update state 7')
+  },
+})
+
+
+S
+.addTransition('one', 'two')
+.addTransition('one', 'six')
+.addTransition('one', 'seven')
+.addTransition('two', 'three')
+.addTransition('two', 'seven')
+.addTransition('three', 'four')
+.addTransition('four', 'three')
+.addTransition('four', 'six')
+.addTransition('four', 'seven')
+.addTransition('six', 'seven')
+
+
+setInterval(() => {
+  S.update(25)
+}, 250);
+
+
+S
+.goto('one')
+.goto('two')
+.goto('three')
+
 
 console.log('stater', O, S)

@@ -1,4 +1,4 @@
-class StateMachine {
+class FiniteStateMachine {
   static count = 0
 
   isChangingState = false
@@ -10,6 +10,7 @@ class StateMachine {
     onExit: ()=>{},
     onUpdate: ()=>{},
   }
+  transitions = [{}]
 
 
   constructor(context) {
@@ -18,11 +19,11 @@ class StateMachine {
       this allows the enter, exit, and update fx to act upon the context-object
     */
     this.context = context
-    this.id = ++StateMachine.count
+    this.id = ++FiniteStateMachine.count
   }
 
 
-  add(name, config) {
+  addState(name, config) {
     if (!name) throw `State Machine <${this.id}>: addState must receive a 'name' parameter`
 
     this.states.set(name, {
@@ -36,13 +37,40 @@ class StateMachine {
   }
 
 
-  currently(name) {
+  addTransition(fromState, toState) {
+    this.transitions.push({
+      from: fromState,
+      to: toState
+    })
+
+    return this
+  }
+
+
+  goto(desiredState) {
+    // transition is only valid if we have a transition registered from the current state to the desired state
+    const valid = this.transitions.filter(el=>(this.inState(el.from) && (desiredState===el.to))).length
+
+    if (this.verbose) console.log(`Valid State-Machine<${this.id}> transition from ${this.state.name} to ${desiredState}?`, valid)
+
+    if (valid) {
+      if (this.verbose) console.log(`State-Machine<${this.id}>.goto() from ${this.state.name} to ${desiredState}`)
+      this.setState(desiredState)
+    } else {
+      console.error(`State-Machine<${this.id}> does not have a transition registered from ${this.state.name} to ${desiredState}`)
+    }
+
+    return valid
+  }
+
+
+  inState(name) {
     return this.state?.name === name
   }
 
 
-  set(name) {
-    if (!this.states.has(name)) console.error(`State-Machine <${this.id}> doesn't have a state named ${name}`)
+  setState(name) {
+    if (!this.states.has(name)) throw `State-Machine <${this.id}> doesn't have a state named ${name}`
 
     if (this.state?.name === name) return
 
@@ -51,7 +79,7 @@ class StateMachine {
     // begin changing states
     this.isChangingState = true
 
-    if (this.verbose) console.log(`State-Machine<${this.id}> changing from ${this.state.name} to ${name}`)
+    if (this.verbose) console.log(`State-Machine<${this.id}>.setState() from ${this.state.name} to ${name}`)
 
     // exit the previous state
     if (this.state?.onExit) this.state.onExit()
@@ -64,17 +92,17 @@ class StateMachine {
 
     this.isChangingState = false
 
-
     return this
   }
+
 
 
   update(dt) {
     if (this.queue.length) return this.set(this.queue.shift())
 
-    if (this.state?.onUpdate) this.state.onUpdate()
+    if (this.state?.onUpdate) this.state.onUpdate(dt)
   }
 }
 
 
-module.exports = StateMachine
+module.exports = FiniteStateMachine
