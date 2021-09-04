@@ -1,10 +1,36 @@
+const chalk = require('chalk')
+
+
+function logResult(result, expectation, message) {
+  if (result == expectation) {
+    console.log(chalk.green(message))
+  } else {
+    console.log(chalk.red(message))
+  }
+}
+
+
+function testTransition(to, expectation) {
+  let from = S.state.name
+  
+  S.goto(to)
+
+  let result = S.inState(to) && S.hasTransition(from, to)
+  
+  logResult(result, expectation, `transition from ${from} to ${to}: ${expectation? 'good': 'not good'}`)
+}
+
+
 const StateMachine = require('.')
 
 const O = {}
 const S = new StateMachine(O)
 
-S.verbose = true
 
+// S.verbose = true
+
+
+// HOW-TO setup states
 S
 .addState('one', {
   name: 'one',
@@ -92,6 +118,7 @@ S
 })
 
 
+// HOW-TO setup transitions
 S
 .addTransition('one', 'two')
 .addTransition('one', 'six')
@@ -102,18 +129,44 @@ S
 .addTransition('four', 'three')
 .addTransition('four', 'six')
 .addTransition('four', 'seven')
+.addTransition('five', 'five')
 .addTransition('six', 'seven')
+.addTransition('seven', 'four')
+.addTransition('seven', 'seven')
 
 
+/* HOW-TO run the state-machine
+    the state-machine update can be run at any-time
+    you may implement more complex schemes with multiple state-machines that update each other
+*/
 setInterval(() => {
   S.update(25)
 }, 250);
 
 
-S
-.goto('one')
-.goto('two')
-.goto('three')
+// HOW-TO set the intial state, can't transition 'from' the void...
+S.setState('one')
 
 
-console.log('stater', O, S)
+// Test various transitions based on the diagram: `states.png`
+testTransition('one', false)
+testTransition('two', true)
+testTransition('two', false)
+testTransition('three', true)
+testTransition('four', true)
+testTransition('seven', true)
+testTransition('seven', true)
+testTransition('six', false)
+testTransition('four', true)
+testTransition('three', true)
+
+S.setState('five')
+testTransition('one', false)
+testTransition('five', true)
+
+S.setState('one')
+testTransition('six', true)
+testTransition('four', false)
+
+
+process.exit(0)
