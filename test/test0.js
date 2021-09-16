@@ -1,4 +1,4 @@
-const StateMachine = require('.')
+const StateMachine = require('..')
 
 const O = {}
 const S = new StateMachine(O)

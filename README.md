@@ -22,3 +22,8 @@
 
   * Initially you `S.setState('blah')`
   * Afterwards use `S.goto('flarn')` to change states
+
+
+## TODO
+
+* ?Should transitions also be `Map`?

@@ -1,4 +1,4 @@
-class FiniteStateMachine {
+export default class FiniteStateMachine {
   static count = 0
 
   isChangingState = false
@@ -117,7 +117,10 @@ class FiniteStateMachine {
 
     if (this.state?.name === name) return
 
-    if (this.isChangingState) return this.queue.push(name)
+    if (this.isChangingState) {
+      if (this.verbose) console.log(`State-Machine<${this.name}> enqueueing ${name}`)
+      return this.queue.push(name)
+    }
 
     // begin changing states
     this.isChangingState = true
@@ -149,6 +152,3 @@ class FiniteStateMachine {
     if (this.state?.onUpdate) this.state.onUpdate(dt)
   }
 }
-
-
-module.exports = FiniteStateMachine
