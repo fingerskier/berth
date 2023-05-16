@@ -11,8 +11,8 @@ export default class FiniteStateMachine {
     onUpdate: ()=>{},
   }
   transitions = [{}]
-
-
+  
+  
   /**
    * 
    * @param {Object} context - parent Object, callback functions are bound to this Object
@@ -93,7 +93,8 @@ export default class FiniteStateMachine {
    * @returns {Boolean} indicating whether such a transition exists
    */
   hasTransition(from, to) {
-    return this.transitions.filter(el=>((from===el.from) && (to===el.to))).length
+    return (this.transitions.filter(el=>((from===el.from) && (to===el.to))).length)
+    || (from === 'void')
   }
 
 

@@ -3,8 +3,9 @@
   "version": "1.2.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,7 @@
     "url": "https://github.com/fingerskier/berth/issues"
   },
   "homepage": "https://github.com/fingerskier/berth#readme",
-  "dependencies": {
-    "chalk": "^4.1.2"
+  "devDependencies": {
+    "chalk": "^5.2.0"
   }
 }

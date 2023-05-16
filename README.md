@@ -55,10 +55,14 @@
 
 **It is important** to call `setState` initially.
 The default state is 'void' which you probably don't want to include in your control schema.
+However, a transition _from_ 'void' is always valid.
+Note, however, that a transition from a state to itself must be defined.
 
-If you call `goto` while the machine changing states then the transition will be queued.
+If you call `goto` while the machine is changing states then the transition will be queued.
 In order to proceed with enqueued transitions you need to periodically call `update`.
-This is not always relevant- perhaps only when you have long-running transition handlers and/or impatient users ;)
+This is not always relevant- only when you have long-running transition handlers and/or impatient users ;)
+
+
 
 
 ## TODO

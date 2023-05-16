@@ -1,4 +1,4 @@
-const StateMachine = require('..')
+import StateMachine from '../index.js'
 
 const O = {}
 const S = new StateMachine(O)
@@ -116,12 +116,16 @@ console.log('stater', O, S)
     the state-machine update can be run at any-time
     you may implement more complex schemes with multiple state-machines that update each other
 */
-setInterval(() => {
-  S.update(25)
+const mainTimer = setInterval(() => {
+  S.update(25) // this dT is fake, but you get the idea
 }, 250);
 
+setTimeout(() => {
+  clearInterval(mainTimer)
+}, 3000);
 
-// Have to force the intial state, there is no 'from' the void...
+
+// Best practice to force the intial state, but a transition from 'void' is always valid
 S.setState('one')
 
 

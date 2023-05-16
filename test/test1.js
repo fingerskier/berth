@@ -1,13 +1,4 @@
-const chalk = require('chalk')
-
-
-function logResult(result, expectation, message) {
-  if (result == expectation) {
-    console.log(chalk.green(message))
-  } else {
-    console.log(chalk.red(message))
-  }
-}
+import {logResult} from './helpers.js'
 
 
 function testTransition(to, expectation) {
@@ -21,7 +12,7 @@ function testTransition(to, expectation) {
 }
 
 
-const StateMachine = require('.')
+import StateMachine from '../index.js'
 
 const O = {}
 const S = new StateMachine(O)
@@ -139,9 +130,13 @@ S
     the state-machine update can be run at any-time
     you may implement more complex schemes with multiple state-machines that update each other
 */
-setInterval(() => {
+const mainTimer = setInterval(() => {
   S.update(25)
 }, 250);
+
+setTimeout(() => {
+  clearInterval(mainTimer)
+}, 6000);
 
 
 // HOW-TO set the intial state, can't transition 'from' the void...
