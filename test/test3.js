@@ -1,19 +1,19 @@
 import machine from './machine.js'
 
 
-S1 = machine()
-S2 = machine()
+const S1 = machine()
+const S2 = machine()
 
 
 /* Run a continual update on both state machines
 */
-setInterval(() => {
+const mainTimer = setInterval(() => {
   S1.update(25) // this dT is fake, but you get the idea
   S2.update(25) // this dT is fake, but you get the idea
 }, 250);
 
 
-// Best practice to force the intial state, but a transition from 'void' is always valid
+// Best practice to force the intial state; although, a transition from 'void' is always valid
 S1.setState('one')
 S2.setState('one')
 
@@ -33,3 +33,9 @@ S1.goto('seven')
 S2.goto('seven')
 S1.goto('one')
 S2.goto('one')
+
+
+setTimeout(() => {
+  clearInterval(mainTimer)
+  console.log('TEST3 END')
+}, 3456);

@@ -2,7 +2,7 @@
   Testing two interactive state-machines
 */
 
-const StateMachine = require('.')
+import StateMachine from '../index.js'
 
 const O1 = {}
 const S1 = new StateMachine(O1, 'One')
@@ -87,3 +87,5 @@ S1.update()
 S2.update()
 S1.update()
 S2.update()
+
+console.log('TEST2 END')

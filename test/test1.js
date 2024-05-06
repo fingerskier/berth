@@ -163,5 +163,4 @@ S.setState('one')
 testTransition('six', true)
 testTransition('four', false)
 
-
-process.exit(0)
+console.log('TEST1 END')

@@ -118,9 +118,10 @@ console.log('stater', O, S)
 */
 const mainTimer = setInterval(() => {
   S.update(25) // this dT is fake, but you get the idea
-}, 250);
+}, 123);
 
 setTimeout(() => {
+  console.log('TEST0 END')
   clearInterval(mainTimer)
 }, 3000);
 
